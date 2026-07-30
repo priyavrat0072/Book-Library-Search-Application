@@ -40,10 +40,37 @@ const getBookData = async(queryText) =>{
   return books
 }
 
+const showBooks = (books) =>{
+  let booklist = document.getElementById("booklist")
+  booklist.innerHTML = ""
+  books.forEach(book => {
+booklist.innerHTML += `
+<div class="w-65 min-h-[600px] p-4 rounded-lg shadow-lg border flex flex-col">
+    <img
+        src="${book.coverImage}"
+        alt="${book.title}"
+        class="w-full h-72 object-cover rounded-md"
+    />
 
-// const getBookDescription = async(key) =>{
-//   let response = await fetch()
-// }
+    <h2 class="mt-3 text-lg font-bold pb-1">${book.title}</h2>
+    <p class="text-gray-500 font-semibold pb-1">${book.author}</p>
+    <p class="text-red-500 font-semibold pb-1">${book.year}</p>
+
+    <p class="line-clamp-2 text-gray-500 text-sm font-light flex-1 pb-1">
+        ${book.description  || "No description found"}
+    </p>
+
+    <p class="text-green-500 font-semibold pb-1">${book.publisher}</p>
+
+    <button class="mt-auto m-1 p-2 bg-blue-400 w-full h-14 border-2 border-black rounded-lg">
+        Add to favorites
+    </button>
+</div>
+`;
+  });
+  
+
+}
 
 const searchBtn = document.getElementById("searchBtn")
 searchBtn.addEventListener("click",async()=>{
@@ -59,5 +86,6 @@ searchBtn.addEventListener("click",async()=>{
     console.log("============================")
   })
 
+  showBooks(bookData)
  
 })
