@@ -2,6 +2,12 @@ const inputData = document.getElementById("inputbox")
 
 
 const getBookData = async(queryText) =>{
+  const loading = document.getElementById("loading")
+  const booklist = document.getElementById("booklist")
+  const nobook = document.getElementById("nobook")
+  loading.classList.remove("hidden")
+  booklist.classList.add("hidden")
+  nobook.classList.add("hidden")
   let response = await fetch(`https://openlibrary.org/search.json?q=${queryText}`)
   let data = await response.json()
 
@@ -37,11 +43,22 @@ const getBookData = async(queryText) =>{
     coverImage
   })
 }
+loading.classList.add("hidden")
+booklist.classList.remove("hidden")
   return books
 }
 
 const showBooks = (books) =>{
-  let booklist = document.getElementById("booklist")
+  if(books.length === 0){
+    let  nobook = document.getElementById("nobook")
+    nobook.classList.remove("hidden")
+    nobook.innerText = "No books found, Please try another search"
+    let booklist = document.getElementById("booklist")
+    booklist.classList.add("hidden")
+  }else{
+    let nobook = document.getElementById("nobook")
+    nobook.classList.add("hidden")
+    let booklist = document.getElementById("booklist")
   booklist.innerHTML = ""
   books.forEach(book => {
 booklist.innerHTML += `
@@ -49,7 +66,7 @@ booklist.innerHTML += `
     <img
         src="${book.coverImage}"
         alt="${book.title}"
-        class="w-full h-72 object-cover rounded-md"
+        class="w-24 h-36 sm:w-32 sm:h-48 md:w-40 md:h-60 lg:w-48 lg:h-72 mx-auto object-cover rounded-md"
     />
 
     <h2 class="mt-3 text-lg font-bold pb-1">${book.title}</h2>
@@ -68,6 +85,7 @@ booklist.innerHTML += `
 </div>
 `;
   });
+  }
   
 
 }
