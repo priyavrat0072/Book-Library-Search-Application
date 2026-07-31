@@ -3,6 +3,7 @@ const inputData = document.getElementById("inputbox")
 /* 
 getBookData function fetching all the Books and Author based on the search made by the user on click of search button
 */
+
 const getBookData = async(queryText) =>{
   const loading = document.getElementById("loading")
   const booklist = document.getElementById("booklist")
@@ -11,8 +12,8 @@ const getBookData = async(queryText) =>{
   booklist.classList.add("hidden")
   nobook.classList.add("hidden")
 
-  const booksObject = []
-  const books = []
+  
+  let books = []
   
   /* 
   Hitting the API endpoint "openlibray" to get data based on query and storing the response array
@@ -86,7 +87,7 @@ booklist.classList.remove("hidden")
 /* 
 Showing all the books in UI from previously stored books array 
 */
-
+let booksObject = []
 const showBooks = (books) =>{
   booksObject = books
   if(books.length === 0){
@@ -140,7 +141,7 @@ booklist.innerHTML += `
   addToFavorites is creating a Array of favorite books from fetched data using key property from booksObject Array and storing in
   local storage to make it presisted data 
 */
-const favoriteBooks = []
+// const favoriteBooks = []
 const addToFavorites=(index)=>{
    let favorites = JSON.parse(localStorage.getItem("favorites")) || []
 
@@ -182,7 +183,7 @@ const addToFavorites=(index)=>{
     <div class="flex flex-col relative sm:flex-row gap-6 items-center sm:items-start w-full">
     
     <button
-  onclick="removeDetails(${index})"
+  onclick="removeDetails()"
   class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 text-xs sm:text-sm md:text-base rounded-lg">
   Close
   </button>

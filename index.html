@@ -8,12 +8,13 @@
   </head>
   <body>
     <div>
+        <!-- Main Heading -->
       <h1
         class="text-3xl sm:text-4xl md:text-5xl font-semibold underline text-orange-500 text-center font-serif m-5"
       >
         Book Library Search
       </h1>
-
+      <!-- Search bar  -->
       <div class="flex flex-col sm:flex-row items-center justify-center w-full gap-3 px-4">
         <input
           type="text"
@@ -21,6 +22,7 @@
           class="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 h-12 px-4 border-2 border-blue-500 rounded-lg"
           placeholder="Search Books and Authors"
         />
+        <!-- Search button -->
         <button
           id="searchBtn"
           class="w-full sm:w-auto h-12 px-6 bg-green-500 text-white border-2 border-black rounded-lg"
@@ -28,13 +30,16 @@
           Search
         </button>
       </div>
+      <!-- Favorite books  -->
       <div id="favorites" class="flex overflow-x-auto gap-4 px-4 py-4 m-5">
             
       </div>
+      <!-- Favorite books dettails -->
       <div id="favoriteBookDetails" class="w-full max-w-5xl mx-auto p-4 sm:p-6 border border-red-500 rounded-xl shadow-md my-6">
         
       </div>
       <div>
+        <!-- Loading spinner -->
         <div
           id="loading"
           class="hidden flex items-center justify-center w-full pt-16"
@@ -43,17 +48,19 @@
             class="w-20 h-20 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"
           ></div>
         </div>
+        <!-- No books found message -->
         <div
           id="nobook"
           class="text-2xl md:text-4xl text-center font-bold text-red-600 underline hidden pt-16"
         ></div>
+        <!-- List of fetched books -->
         <div
           id="booklist"
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 m-4 md:m-8 lg:m-10"
         ></div>
       </div>
     </div>
-
+    <!-- connecting to JS file -->
     <script src="script.js"></script>
   </body>
 </html>
