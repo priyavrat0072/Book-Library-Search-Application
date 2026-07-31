@@ -6,7 +6,7 @@ Documentation of Book Library Search Application
 
 1. How to navigate through Application
 
--> open the page 
+-> Open the page 
 -> Search the book or the author in the search bar
 -> wait till loading indictor is spinning(in case of invalid search it will show "No books found")
 -> After the search is complete the books with details shows up (cover image , title , author etc)
