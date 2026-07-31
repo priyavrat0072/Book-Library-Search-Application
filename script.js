@@ -107,16 +107,53 @@ const addToFavorites=(index)=>{
     favorites.push(booksObject[index])
     localStorage.setItem("favorites",JSON.stringify(favorites))
     console.log("Book added to favorites")
+    showFavoriteBooks()
     // console.log(favorites)
    }else{
     console.log("Book already exists")
    }
 
 }
+  const showDetails=(index)=>{
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || []
+    console.log(favorites[index])
+    let favoriteBookDetails = document.getElementById("favoriteBookDetails")
+    favoriteBookDetails.innerHTML = ""
+    favoriteBookDetails.innerHTML = `
+      <img src="${favorites[index].coverImage}" alt="${favorites[index].title}" class="w-24 h-36 sm:w-32 sm:h-48 mx-auto object-cover rounded-md" />
+    `
+  }
+
+const removeFromFavorites=(index)=>{
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || []
+  favorites.splice(index,1)
+  localStorage.setItem("favorites" , JSON.stringify(favorites))
+  showFavoriteBooks()
+}
 
 const showFavoriteBooks =()=>{
-  const favorites = JSON.parse(localStorage.getItem("favorites")) || []
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || []
+  const favoritesDiv = document.getElementById("favorites")
   console.log(favorites)
+
+  favoritesDiv.innerHTML = ""
+
+  favorites.forEach((book,index)=>{
+    favoritesDiv.innerHTML += `
+    <div  class="w-48 flex-shrink-0 min-h-[300px] p-4 rounded-lg shadow-lg border flex flex-col bg-orange-50">
+      <img src=${book.coverImage} alt=${book.title} class="w-24 h-32 sm:w-28 sm:h-40 mx-auto object-cover rounded-md"/>
+      <h4 class="mt-3 text-base font-normal pb-1">${book.title || "No title found"}</h3>
+      <button onclick="showDetails(${index})" class="mt-auto m-1 p-2 bg-green-400 w-full h-12 border-2 border-black rounded-lg">
+      Detials
+      </button>
+      <button onclick="removeFromFavorites(${index})" class=" m-1 p-2 bg-red-400 w-full h-12 border-2 border-black rounded-lg">
+    Remove
+    </button>
+      </div>
+    
+    `
+  })
+
 }
 showFavoriteBooks()
 
