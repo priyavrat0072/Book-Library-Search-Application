@@ -1,5 +1,8 @@
 const inputData = document.getElementById("inputbox")
 
+/* 
+getBookData function fetching all the Books and Author based on the search made by the user on click of search button
+*/
 const getBookData = async(queryText) =>{
   const loading = document.getElementById("loading")
   const booklist = document.getElementById("booklist")
@@ -11,13 +14,19 @@ const getBookData = async(queryText) =>{
   const booksObject = []
   const books = []
   
+  /* 
+  Hitting the API endpoint "openlibray" to get data based on query and storing the response array
+  */
   try{
   let favoriteBookDetails = document.getElementById("favoriteBookDetails")
     favoriteBookDetails.classList.add("hidden")
   let response = await fetch(`https://openlibrary.org/search.json?q=${queryText}`)
   let data = await response.json()
 
-
+    /* 
+    slice the response data array in 10 because data loading taking too much time for Demo purpose
+    Fetching the description data using key property from responnse array
+    */
     for(let book of data.docs.slice(0,10)){
       try{
     const workRes = await fetch(`https://openlibrary.org${book.key}.json`)
@@ -31,6 +40,9 @@ const getBookData = async(queryText) =>{
   } else if (workData.description?.value) {
     description = workData.description.value;
   }
+  /* 
+    Fetching the publisher data using key property from responnse array
+    */
 
   const editionAPI = await fetch(`https://openlibrary.org${book.key}/editions.json`)
 
@@ -38,7 +50,15 @@ const getBookData = async(queryText) =>{
 
   const publisher = editionData.entries[0]?.publishers?.[0] || "unknown"
 
+  /* 
+    Fetching the cover image data using cover_i property from responnse array
+    */
+
   const coverImage = book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg` :""
+
+  /* 
+  Pushing All the data in books Array for render data on UI
+  */
 
   books.push({
     key : book.key,
@@ -62,6 +82,10 @@ loading.classList.add("hidden")
 booklist.classList.remove("hidden")
   return books
 }
+
+/* 
+Showing all the books in UI from previously stored books array 
+*/
 
 const showBooks = (books) =>{
   booksObject = books
@@ -111,6 +135,11 @@ booklist.innerHTML += `
   });
   }
 }
+
+/* 
+  addToFavorites is creating a Array of favorite books from fetched data using key property from booksObject Array and storing in
+  local storage to make it presisted data 
+*/
 const favoriteBooks = []
 const addToFavorites=(index)=>{
    let favorites = JSON.parse(localStorage.getItem("favorites")) || []
@@ -129,10 +158,18 @@ const addToFavorites=(index)=>{
 
 }
 
+/* 
+  removeDetails function just close the  favorite book details box on a button click
+*/
+
   const removeDetails=()=>{
     let favoriteBookDetails = document.getElementById("favoriteBookDetails")
     favoriteBookDetails.classList.add("hidden")
   }
+
+  /* 
+    showDetails function fetch the data from local storage array of favorite books and show it in a box below the favorite books
+  */
 
   const showDetails=(index)=>{
     let favorites = JSON.parse(localStorage.getItem("favorites")) || []
@@ -169,12 +206,20 @@ const addToFavorites=(index)=>{
     `
   }
 
+  /* 
+  removeFromFavorites function remove the book from local storage favorites array on button click using splice method
+  */
+
 const removeFromFavorites=(index)=>{
   let favorites = JSON.parse(localStorage.getItem("favorites")) || []
   favorites.splice(index,1)
   localStorage.setItem("favorites" , JSON.stringify(favorites))
   showFavoriteBooks()
 }
+
+/* 
+  showFavoriteBooks function shows favorite books in horizontal manner by looping through local storage array below search bar with 2 buttons "Details" and "Remove" on each book
+*/
 
 const showFavoriteBooks =()=>{
   let favoriteBookDetails = document.getElementById("favoriteBookDetails")
@@ -203,7 +248,14 @@ const showFavoriteBooks =()=>{
   })
 
 }
+/* 
+showFavoriteBooks function fetch data from local storage when page loads first time
+*/
 showFavoriteBooks()
+
+/* 
+Getting data from search button and passing it as query for searching books and auhtors
+*/
 
 const searchBtn = document.getElementById("searchBtn")
 searchBtn.addEventListener("click",async()=>{
@@ -220,6 +272,7 @@ searchBtn.addEventListener("click",async()=>{
   //   console.log("============================")
   // })
 
+  // Main function call
   showBooks(bookData)
  
 })

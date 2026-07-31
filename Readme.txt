@@ -11,4 +11,4 @@ For fetching publisher details = https://openlibrary.org/works/OL27448W/editions
 publisher
 
 
-class="w-24 h-36 sm:w-32 sm:w-48 md:w-40 md:h-60 lg:w-48 lg:w-72 mx-auto object-cover rounded-md"
+
