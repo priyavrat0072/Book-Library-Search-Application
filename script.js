@@ -7,16 +7,19 @@ const getBookData = async(queryText) =>{
   loading.classList.remove("hidden")
   booklist.classList.add("hidden")
   nobook.classList.add("hidden")
+
+  const booksObject = []
+  const books = []
+  
+  try{
   let favoriteBookDetails = document.getElementById("favoriteBookDetails")
     favoriteBookDetails.classList.add("hidden")
   let response = await fetch(`https://openlibrary.org/search.json?q=${queryText}`)
   let data = await response.json()
 
-  const booksObject = []
-  const books = []
-  
 
-  for(let book of data.docs.slice(0,10)){
+    for(let book of data.docs.slice(0,10)){
+      try{
     const workRes = await fetch(`https://openlibrary.org${book.key}.json`)
   
   const workData = await workRes.json()
@@ -46,7 +49,15 @@ const getBookData = async(queryText) =>{
     publisher,
     coverImage
   })
+}catch(err){
+  console.log(`Error fetching book details`,err)
 }
+}
+  }catch(err){
+    console.log(`Error in searching data`,err)
+  }
+
+  
 loading.classList.add("hidden")
 booklist.classList.remove("hidden")
   return books
@@ -130,14 +141,17 @@ const addToFavorites=(index)=>{
     favoriteBookDetails.classList.remove("hidden")
     favoriteBookDetails.innerHTML = ""
     favoriteBookDetails.innerHTML = `
+    <p class="flex justify-center font-bold text-xl underline text-blue-700 mb-4">Book Details</p>
     <div class="flex flex-col relative sm:flex-row gap-6 items-center sm:items-start w-full">
-        
-    <button onclick="removeDetails(${index})" class=" absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg">
-    Close
-    </button>
+    
+    <button
+  onclick="removeDetails(${index})"
+  class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 text-xs sm:text-sm md:text-base rounded-lg">
+  Close
+  </button>
     
           <div class="flex-shrink-0">
-      <img src="${favorites[index].coverImage}" alt="${favorites[index].title}" class="w-32 h-48 sm:w-36 sm:h-52 md:w-40 md:h-60 object-cover rounded-md mx-auto" />
+      <img src="${favorites[index].coverImage}" alt="${favorites[index].title}" class="w-24 h-36 sm:w-28 sm:h-40 md:w-32 md:h-48 object-cover rounded-md mx-auto"/>
       </div>
       <div class="flex-1">
       <h1 class="text-xl sm:text-2xl font-bold">${favorites[index].title || "No title found"}</h1>
@@ -170,6 +184,7 @@ const showFavoriteBooks =()=>{
   console.log(favorites)
 
   favoritesDiv.innerHTML = ""
+  
 
   favorites.forEach((book,index)=>{
     favoritesDiv.innerHTML += `
@@ -177,7 +192,7 @@ const showFavoriteBooks =()=>{
       <img src=${book.coverImage} alt=${book.title} class="w-24 h-32 sm:w-28 sm:h-40 mx-auto object-cover rounded-md"/>
       <h4 class="mt-3 text-base font-normal pb-1">${book.title || "No title found"}</h3>
       <button onclick="showDetails(${index})" class="mt-auto m-1 p-2 bg-green-400 w-full h-12 border-2 border-black rounded-lg">
-      Detials
+      Details
       </button>
       <button onclick="removeFromFavorites(${index})" class=" m-1 p-2 bg-red-400 w-full h-12 border-2 border-black rounded-lg">
     Remove
