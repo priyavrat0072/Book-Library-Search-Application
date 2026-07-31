@@ -7,6 +7,8 @@ const getBookData = async(queryText) =>{
   loading.classList.remove("hidden")
   booklist.classList.add("hidden")
   nobook.classList.add("hidden")
+  let favoriteBookDetails = document.getElementById("favoriteBookDetails")
+    favoriteBookDetails.classList.add("hidden")
   let response = await fetch(`https://openlibrary.org/search.json?q=${queryText}`)
   let data = await response.json()
 
@@ -58,6 +60,7 @@ const showBooks = (books) =>{
     nobook.innerText = "No books found, Please try another search"
     let booklist = document.getElementById("booklist")
     booklist.classList.add("hidden")
+    
   }else{
     let nobook = document.getElementById("nobook")
     nobook.classList.add("hidden")
@@ -114,13 +117,41 @@ const addToFavorites=(index)=>{
    }
 
 }
+
+  const removeDetails=()=>{
+    let favoriteBookDetails = document.getElementById("favoriteBookDetails")
+    favoriteBookDetails.classList.add("hidden")
+  }
+
   const showDetails=(index)=>{
     let favorites = JSON.parse(localStorage.getItem("favorites")) || []
     console.log(favorites[index])
     let favoriteBookDetails = document.getElementById("favoriteBookDetails")
+    favoriteBookDetails.classList.remove("hidden")
     favoriteBookDetails.innerHTML = ""
     favoriteBookDetails.innerHTML = `
-      <img src="${favorites[index].coverImage}" alt="${favorites[index].title}" class="w-24 h-36 sm:w-32 sm:h-48 mx-auto object-cover rounded-md" />
+    <div class="flex flex-col relative sm:flex-row gap-6 items-center sm:items-start w-full">
+        
+    <button onclick="removeDetails(${index})" class=" absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg">
+    Close
+    </button>
+    
+          <div class="flex-shrink-0">
+      <img src="${favorites[index].coverImage}" alt="${favorites[index].title}" class="w-32 h-48 sm:w-36 sm:h-52 md:w-40 md:h-60 object-cover rounded-md mx-auto" />
+      </div>
+      <div class="flex-1">
+      <h1 class="text-xl sm:text-2xl font-bold">${favorites[index].title || "No title found"}</h1>
+      <p class="text-sm sm:text-base text-gray-500">${favorites[index].author || "No author found"}</p>
+    <p class="text-red-500 font-semibold pb-1">${favorites[index].year || "No year found"}</p>
+
+    <p class="line-clamp-2 text-gray-500 text-sm font-light flex-1 pb-1">
+        ${favorites[index].description  || "No description found"}
+    </p>
+
+    <p class="text-green-500 font-semibold pb-1">${favorites[index].publisher || "No publisher found"}</p>
+      </div>
+    </div>
+
     `
   }
 
@@ -132,6 +163,8 @@ const removeFromFavorites=(index)=>{
 }
 
 const showFavoriteBooks =()=>{
+  let favoriteBookDetails = document.getElementById("favoriteBookDetails")
+    favoriteBookDetails.classList.add("hidden")
   let favorites = JSON.parse(localStorage.getItem("favorites")) || []
   const favoritesDiv = document.getElementById("favorites")
   console.log(favorites)
